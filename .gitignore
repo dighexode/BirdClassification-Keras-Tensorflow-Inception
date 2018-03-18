@@ -262,3 +262,5 @@ __pycache__/
 
 
 image/
+images.txt
+train_test_split.txt

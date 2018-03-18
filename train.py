@@ -16,20 +16,20 @@ from keras.models import Model
 from keras.layers import Dense, GlobalAveragePooling2D
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import SGD
-from keras.utils.training_utils import multi_gpu_model
+#from keras.utils.training_utils import multi_gpu_model
 
 IM_SIZE = (299, 299) #fixed size for InceptionV3
-NB_EPOCHS = 200 #epoch number
-BAT_SIZE = 64 #batch size
+NB_EPOCHS = 20 #epoch number
+BAT_SIZE = 5 #batch size
 FC_SIZE = 1024
 NB_IV3_LAYERS_TO_FREEZE = 172
 GPU_NUM = 1
-NB_CLASSES = 200
+NB_CLASSES = 6
 
 # data prep
 train_datagen =  ImageDataGenerator(
       preprocessing_function=preprocess_input,
-      rotation_range=30,
+      #rotation_range=30,
       width_shift_range=0.2,
       height_shift_range=0.2,
       shear_range=0.2,
@@ -38,7 +38,7 @@ train_datagen =  ImageDataGenerator(
 )
 test_datagen = ImageDataGenerator(
       preprocessing_function=preprocess_input,
-      rotation_range=30,
+      #rotation_range=30,
       width_shift_range=0.2,
       height_shift_range=0.2,
       shear_range=0.2,
@@ -52,11 +52,11 @@ train_generator = train_datagen.flow_from_directory(
     batch_size=BAT_SIZE
 )
 
-validation_generator = test_datagen.flow_from_directory(
-    'test_images',
-    target_size=IM_SIZE,
-    batch_size=BAT_SIZE
-)
+#validation_generator = test_datagen.flow_from_directory(
+#    'test_images',
+#    target_size=IM_SIZE,
+#    batch_size=BAT_SIZE
+#)
 # setup model
 base_model = InceptionV3(weights='imagenet', include_top=False) #include_top=False excludes final FC layer
 temp_model = GlobalAveragePooling2D()(base_model.output)
@@ -83,9 +83,9 @@ model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), loss='categorical_crossent
 history_tl = model.fit_generator(
     generator=train_generator,
     epochs=NB_EPOCHS,
-    steps_per_epoch=len(train_generator),
+    steps_per_epoch=len(list(train_generator)),
     verbose=2
 )
 
 # save the model
-model.save('bird.hdf5')
+model.save('titleclassify.hdf5')
