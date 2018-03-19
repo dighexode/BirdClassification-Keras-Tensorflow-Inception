@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{c13533a6-2dca-40ac-accf-ddeeba1e1204}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>extendimage.py</StartupFile>
+    <StartupFile>gettitle.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -25,6 +25,10 @@
   <ItemGroup>
     <Compile Include="dataprocess.py" />
     <Compile Include="extendimage.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gettitle.py" />
+    <Compile Include="rename.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="test.py" />
