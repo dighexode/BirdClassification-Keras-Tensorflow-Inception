@@ -10,10 +10,13 @@ if __name__ == '__main__':
     argparser = ArgumentParser()
     argparser.add_argument('source_folder', help='input the source folder path')
     argparser.add_argument('destination_folder', help='input the desination folder path')
+    argparser.add_argument('-paste_count', default=1, type=int, help='the count of source image pasted on target image')
     args = argparser.parse_args()
     source_folder = args.source_folder
     destination_folder = args.destination_folder
+    paste_count = args.paste_count
     index = 0
+    print('paste_count: ', paste_count)
     #os.walk()返回的root_folder实际上是把当前目录的每一级子目录当做根目录进行遍历
     for root_folder1, sub_folder1, file_list1 in os.walk(source_folder):
         destination_folder_path = ''
@@ -36,9 +39,13 @@ if __name__ == '__main__':
                     width = int(Image_Height * 1.0 / height * width)
                     height = Image_Height
                     img = img.resize((width, height))
-                x = int((Image_Width - width)/2)
-                y = int((Image_Height - height)/2)
-                print(width, height, x, y)
-                target.paste(img, (x, y, x + width, y + height))
-                target.save(destination_file_path, quality = 100)
+                total_height = height * paste_count + (paste_count + 1)
+                x0 = int((Image_Width - width)/2)
+                y0 = int((Image_Height - total_height)/2)
+                #print(width, height, x, y)
+                for i in range(paste_count):
+                    x = x0
+                    y = y0 + i * height + i - 1
+                    target.paste(img, (x, y, x + width, y + height))
+                    target.save(destination_file_path, quality = 100)
         index += 1
